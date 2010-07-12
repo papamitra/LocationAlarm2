@@ -69,7 +69,7 @@ class LocationPicker extends MapActivity{
 
     setContentView(R.layout.map)
 
-    val smapView = new SMapView(findViewById(R.id.mapview)) withAction( 
+    val smapView = new SMapView(this.%(R.id.mapview)) withAction( 
       _ setBuiltInZoomControls true)
     val smapCtrl = smapView.getSMapController withActions(
       _ animateTo mPoint,
