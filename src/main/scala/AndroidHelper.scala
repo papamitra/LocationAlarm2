@@ -7,20 +7,6 @@ object AndroidHelper {
   import android.app.Activity
   val TAG1 = "AndroidHelper"
 
-  // findViewById(id).asInstanceOf[T] -> this.%[T](id)
-  class PercentAssocActivity[A <: Activity](x: A){
-    def %[B <: View](id:Int): B = x.findViewById(id).asInstanceOf[B]
-  }
-
-  implicit def anyPercentAssocActivity[T <: Activity](x: T)= new PercentAssocActivity(x)
-
-  class PercentAssocView[A <: View](x: A){
-    def %[B <: View](id:Int): B = x.findViewById(id).asInstanceOf[B]
-  }
-
-  implicit def any2PercentAssocView[T <: View](x: T)= new PercentAssocView(x)
-
-
   // OnClickListener helper
   import android.view.View.OnClickListener
   implicit def funcToClicker(f:View => Unit):OnClickListener = 

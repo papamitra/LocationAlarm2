@@ -17,9 +17,10 @@ object LocationAlarms {
   val ALARM_ID = "alarm_id"
 }
 
-class LocationAlarms extends Activity{
+class LocationAlarms extends Activity with TypedActivity{
   import org.scalaandroid.AndroidHelper._
   import Define._
+  import TypedResource._
 
   private class AlarmAdapter(val context:Context, val cursor:Cursor) extends CursorAdapter(context, cursor){
     override def newView(context:Context, cursor:Cursor, parent:ViewGroup ):View = {
@@ -31,7 +32,7 @@ class LocationAlarms extends Activity{
 
     override def bindView(view:View, context:Context, cursor:Cursor){
       val alarm = new Alarm(cursor)
-      view.%[CheckBox](R.id.list_enabled) match {
+      view.findView(TR.list_enabled) match {
 	case null =>
 	case cb =>
 	  cb.setChecked(alarm.enabled)
@@ -44,13 +45,13 @@ class LocationAlarms extends Activity{
 	  })
       }
 
-      view.%[TextView](R.id.list_address) match{
+      view.findView(TR.list_address) match{
 	  case null =>
 	  case tv => 
 	    tv.setText( if(null!=alarm.address) alarm.address else "")
       }
 
-      view.%[TextView](R.id.list_label) match{
+      view.findView(TR.list_label) match{
 	case null =>
 	case tv =>
 	  tv.setText( if(null!=alarm.label) alarm.label else "")
@@ -72,9 +73,9 @@ class LocationAlarms extends Activity{
     Log.i(TAG, "LocationAlarms.updateLayout")
     setContentView(R.layout.main)
 
-    var listview = this.%[ListView](R.id.list)
+    var listview = findView(TR.list)
     listview.setAdapter(new AlarmAdapter(this, Alarms.getAlarmsCursor(getContentResolver)))
-    listview.setEmptyView(this.%(R.id.empty))
+    listview.setEmptyView(findView(TR.empty))
 
     listview.setOnItemClickListener(
       new OnItemClickListener(){

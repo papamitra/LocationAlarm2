@@ -16,7 +16,7 @@ import android.content.DialogInterface.OnClickListener
 import android.widget.Button
 import android.view.{WindowManager,KeyEvent}
 
-class AlarmAlert extends Activity{
+class AlarmAlert extends Activity with TypedActivity{
   import org.scalaandroid.AndroidHelper._
 
   val TAG = "AlarmAlert"
@@ -38,7 +38,7 @@ class AlarmAlert extends Activity{
 
     setContentView(R.layout.alarm_alert)
 
-    this.%[Button](R.id.dismiss).setOnClickListener(() => dismiss)
+    findView(TR.dismiss).setOnClickListener(() => dismiss)
 
     registerReceiver(mReceiver, new IntentFilter(Alarms.ALARM_KILLED))
   }

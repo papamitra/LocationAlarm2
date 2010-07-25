@@ -25,6 +25,7 @@ class SetAlarm extends PreferenceActivity with ActivityResultTrait{
   import LocationPicker._
   import android.app.Activity._
   import Define._
+  import TypedResource._
 
   private var mLatitude:Double = _
   private var mLongitude:Double = _
@@ -195,7 +196,7 @@ class SetAlarm extends PreferenceActivity with ActivityResultTrait{
     getListView().setItemsCanFocus(true)
 
     // Grab the content view so we can modify it.
-    val content = getWindow().getDecorView().%[FrameLayout](android.R.id.content)
+    val content = getWindow().getDecorView().findViewById(android.R.id.content).asInstanceOf[FrameLayout]
 
     // Get the main ListView and remove it from the content view.
     val lv = getListView()
@@ -217,13 +218,13 @@ class SetAlarm extends PreferenceActivity with ActivityResultTrait{
     // Inflate the buttons onto the LinearLayout.
     val v = LayoutInflater.from(this).inflate(R.layout.save_cancel_alarm, ll)
 
-    v.%[Button](R.id.alarm_save).setOnClickListener(() => {
+    v.findView(TR.alarm_save).setOnClickListener(() => {
       saveAlarm(id)
       startService(new Intent(SetAlarm.this, classOf[AlarmService]))
       finish
     })
 
-    v.%[Button](R.id.alarm_cancel).setOnClickListener(() => {
+    v.findView(TR.alarm_cancel).setOnClickListener(() => {
       finish
     })
 

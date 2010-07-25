@@ -29,11 +29,12 @@ object LocationPicker{
   val REQUEST_LOCATION = 0
 }
 
-class LocationPicker extends MapActivity{
+class LocationPicker extends MapActivity with TypedActivity{
   import org.maidroid.scalamap._
   import android.app.Activity._
   import LocationPicker._
   import org.scalaandroid.AndroidHelper._
+  import TypedResource._
 
   val TAG = "LocationPicker"
   val INITIAL_ZOOM_LEVEL = 15
@@ -69,7 +70,7 @@ class LocationPicker extends MapActivity{
 
     setContentView(R.layout.map)
 
-    val smapView = new SMapView(this.%(R.id.mapview)) withAction( 
+    val smapView = new SMapView(findView(TR.mapview)) withAction( 
       _ setBuiltInZoomControls true)
     val smapCtrl = smapView.getSMapController withActions(
       _ animateTo mPoint,
@@ -93,14 +94,14 @@ class LocationPicker extends MapActivity{
       }
     })
 
-    this.%[Button](R.id.map_ok).setOnClickListener( () => {
+    findView(TR.map_ok).setOnClickListener( () => {
       setResult(RESULT_OK, (new Intent())
 		.putExtra(LATITUDE, mPoint.getLatitudeE6)
 		.putExtra(LONGITUDE, mPoint.getLongitudeE6))
       finish
     })
 
-    this.%[Button](R.id.map_cancel).setOnClickListener(() => {
+    findView(TR.map_cancel).setOnClickListener(() => {
       setResult(RESULT_CANCELED)
       finish
     })
