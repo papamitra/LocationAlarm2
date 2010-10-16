@@ -46,8 +46,6 @@ object Alarm{
 
 case class TTL(val shour:Int, val sminute:Int, val min:Int){
   import java.util.Calendar
-  import android.util.Log
-  import Define._
   
   def isInTimeRange(nowMillis:Long):Boolean = {
     val smin = shour * 60 + sminute

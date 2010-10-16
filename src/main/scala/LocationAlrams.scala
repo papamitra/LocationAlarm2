@@ -8,10 +8,11 @@ import android.view.View.OnClickListener
 import android.widget.{ArrayAdapter, TextView, CheckBox, ListView, AdapterView, CursorAdapter}
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.Toast
-import android.util.Log
 
 import android.database.Cursor
 import android.content.res.Configuration
+
+import android.util.Log
 
 object LocationAlarms {
   val ALARM_ID = "alarm_id"
@@ -19,7 +20,6 @@ object LocationAlarms {
 
 class LocationAlarms extends Activity with TypedActivity{
   import org.scalaandroid.AndroidHelper._
-  import Define._
   import TypedResource._
 
   private class AlarmAdapter(val context:Context, val cursor:Cursor) extends CursorAdapter(context, cursor){

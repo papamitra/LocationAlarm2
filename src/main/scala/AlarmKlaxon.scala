@@ -18,7 +18,6 @@ import android.telephony.TelephonyManager
 
 import android.util.Log
 
-
 object AlarmKlaxon{
   private val IN_CALL_VOLUME = 0.125f
 
@@ -30,7 +29,6 @@ object AlarmKlaxon{
 
 class AlarmKlaxon extends Service{
   import AlarmKlaxon._
-  import Define._
 
   private var mMediaPlayer:MediaPlayer = _
 

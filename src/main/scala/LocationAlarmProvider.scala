@@ -6,6 +6,7 @@ import android.database.{Cursor, SQLException}
 import android.database.sqlite.{SQLiteDatabase, SQLiteOpenHelper, SQLiteQueryBuilder}
 import android.net.Uri
 import android.text.TextUtils
+
 import android.util.Log
 
 object LocationAlarmProvider{
@@ -20,7 +21,6 @@ object LocationAlarmProvider{
 }
 
 class LocationAlarmProvider extends ContentProvider{
-  import Define._
   import LocationAlarmProvider._
 
   private val DATABASE_NAME = "alarms.db"

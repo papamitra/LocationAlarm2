@@ -3,13 +3,13 @@ package org.papamitra.locationalarm
 
 import android.content.{Context, ContentValues, ContentUris, ContentResolver, Intent}
 import android.app.{PendingIntent, AlarmManager}
+
 import android.util.Log
 
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
 object Alarms{
-  import Define._
   import org.scalaandroid.AndroidHelper._
 
   val ALERT_START = "alert_start"

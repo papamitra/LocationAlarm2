@@ -7,8 +7,6 @@ import android.os.{Handler, IBinder, Bundle}
 import android.location.{Location,LocationListener, LocationManager}
 import android.util.Log
 
-import Define._
-
 class AlarmService extends Service with LocationListener{
   import scala.math
 

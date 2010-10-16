@@ -5,7 +5,6 @@ import android.os.{Bundle, Handler, Message}
 import android.preference.{Preference, PreferenceActivity, EditTextPreference, ListPreference, CheckBoxPreference, PreferenceScreen}
 import android.preference.Preference.OnPreferenceClickListener
 import android.widget.Toast
-import android.util.Log
 
 import android.view.{View, LayoutInflater}
 import android.view.ViewGroup.LayoutParams
@@ -19,12 +18,13 @@ import android.widget.TimePicker
 
 import java.util.Locale
 
+import android.util.Log
+
 class SetAlarm extends PreferenceActivity with ActivityResultTrait{
 
   import org.scalaandroid.AndroidHelper._
   import LocationPicker._
   import android.app.Activity._
-  import Define._
   import TypedResource._
 
   private var mLatitude:Double = _

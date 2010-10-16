@@ -6,8 +6,6 @@ import android.app.Activity
 import android.app.AlertDialog.Builder
 import android.os.Bundle
 
-import android.util.Log
-
 // for AlertDialog
 import android.app.AlertDialog
 import android.content.DialogInterface
