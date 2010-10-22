@@ -97,7 +97,7 @@ object Alarms{
     val nowHour = c.get(Calendar.HOUR_OF_DAY)
     val nowMinute = c.get(Calendar.MINUTE)
     
-    if((hour < nowHour) || (hour == nowHour && minute < nowMinute)){
+    if((hour < nowHour) || (hour == nowHour && minute <= nowMinute)){
       c.add(Calendar.DAY_OF_YEAR, 1)
     }
     
