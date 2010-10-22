@@ -10,8 +10,6 @@ import android.util.Log
 class AlarmService extends Service with LocationListener{
   import scala.math
 
-  var mAlarms:Array[Alarm] = _
-
   val MIN_TIME:Int = 0
   val MIN_DISTANCE:Int = 1
 
@@ -49,29 +47,26 @@ class AlarmService extends Service with LocationListener{
   override def onStartCommand(intent:Intent, flags:Int, startId:Int):Int = {
     Log.i(TAG, "AlarmService.onStartCommand id = " + startId)
 
-    mAlarms = Alarms.getAllAlarm(getContentResolver)
+    val alarms = Alarms.getAllAlarm(getContentResolver)
 
     Alarms.disableAlert(this)
 
-    if(mAlarms.filter(_.enabled).isEmpty){
+    if(!alarms.exists(_.enabled)){
       Log.i(TAG, "No Alarm Enabled")
       stopSelf()
       return Service.START_NOT_STICKY
     }
 
     val currentMillis = System.currentTimeMillis
-    if(mAlarms.filter(_.isActiveAt(currentMillis)).isEmpty){
+    if(!alarms.exists(_.isActiveAt(currentMillis))){
       Log.i(TAG, "No Alarm Enabled")
-      val minNextMillis = mAlarms.filter(_.enabled)
+      // 直近のアラーム起動時間を算出
+      val minNextMillis = alarms.filter(_.enabled)
 				  .map(Alarms.calculateNextMillis(_))
 				  .reduceLeft(math.min(_,_))
-      if (minNextMillis - currentMillis < MIN_TIME){
-	return Service.START_STICKY
-      }else{
-	Alarms.enableAlert(this,minNextMillis)
-	stopSelf()
-	return Service.START_NOT_STICKY
-      }
+      Alarms.enableAlert(this,minNextMillis)
+      stopSelf()
+      return Service.START_NOT_STICKY
     }
     
     return Service.START_STICKY
