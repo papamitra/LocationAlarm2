@@ -24,15 +24,16 @@ object Alarms{
 
   val ALARM_KILLED = "alarm_killed"
 
+/*
   def updateAlarm(context:Context, alarm:Alarm, nextMillis:Long=0) =
     setAlarm(context,
-	     id = alarm.id,
-	     enabled = alarm.enabled,
-	     label = alarm.label,
-	     address = alarm.address,
-	     latitude = alarm.latitude,
-	     longitude = alarm.longitude,
-	     ttl=alarm.ttl,
+	     id = alarm._id.is,
+	     enabled = alarm.enabled.is,
+	     label = alarm.label.is,
+	     address = alarm.address.is,
+	     latitude = alarm.latitude.is,
+	     longitude = alarm.longitude.is,
+	     ttl=alarm.ttl.is,
 	     nextmillis=nextMillis)
 
   def setAlarm(context:Context, id:Int, enabled:Boolean, label:String, address:String,
@@ -55,7 +56,9 @@ object Alarms{
 				      values, null, null)
 
   }
+*/
 
+/*
   def enabledAlarm(context:Context, id:Int, enabled:Boolean):Unit =
     getAlarm(context.getContentResolver, id) match {
       case Some(alarm) => enabledAlarm(context, alarm, enabled)
@@ -67,8 +70,8 @@ object Alarms{
     setAlarm(context, alarm.id, enabled, alarm.label, alarm.address,
 	     alarm.latitude, alarm.longitude,
 	     alarm.ttl, 0)
-
-
+*/
+/*
   def getAlarm(resolver:ContentResolver, id:Int):Option[Alarm] = 
     using(resolver.query(
       ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, id),
@@ -78,15 +81,15 @@ object Alarms{
       case c if c.moveToFirst => Some(new Alarm(c))
       case _ => None
     }}
+*/
+//  def getAlarmsCursor(resolver:ContentResolver) = 
+//    resolver.query(
+//		Alarm.Columns.CONTENT_URI,
+//		Alarm.Columns.ALARM_QUERY_COLUMNS,
+//		null, null, null)
 
-  def getAlarmsCursor(resolver:ContentResolver) = 
-    resolver.query(
-		Alarm.Columns.CONTENT_URI,
-		Alarm.Columns.ALARM_QUERY_COLUMNS,
-		null, null, null)
-
-  def getAllAlarm(resolver:ContentResolver) = 
-    using(getAlarmsCursor(resolver)){ c=> c.map(new Alarm(_)).toArray}
+//  def getAllAlarm(resolver:ContentResolver) = 
+//    using(getAlarmsCursor(resolver)){ c=> c.map(new Alarm(_)).toArray}
 
   def calculateNextMillis(alarm:Alarm):Long = calculateAlarm(alarm.ttl.shour, alarm.ttl.sminute).getTimeInMillis
 

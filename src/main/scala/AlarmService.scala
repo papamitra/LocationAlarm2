@@ -13,6 +13,8 @@ class AlarmService extends Service with LocationListener{
   val MIN_TIME:Int = 0
   val MIN_DISTANCE:Int = 1
 
+  lazy val alarmTable = new AlarmTable(this)
+
   private lazy val alertReceiver = new BroadcastReceiver(){
     override def onReceive(context:Context, intent:Intent){
 
@@ -47,11 +49,11 @@ class AlarmService extends Service with LocationListener{
   override def onStartCommand(intent:Intent, flags:Int, startId:Int):Int = {
     Log.i(TAG, "AlarmService.onStartCommand id = " + startId)
 
-    val alarms = Alarms.getAllAlarm(getContentResolver)
-
     Alarms.disableAlert(this)
 
-    if(!alarms.exists(_.enabled)){
+    val alarms = alarmTable.findAll
+
+    if(!alarms.exists(_.enabled.is)){
       Log.i(TAG, "No Alarm Enabled")
       stopSelf()
       return Service.START_NOT_STICKY
@@ -61,7 +63,7 @@ class AlarmService extends Service with LocationListener{
     if(!alarms.exists(_.isActiveAt(currentMillis))){
       Log.i(TAG, "No Alarm Enabled")
       // 直近のアラーム起動時間を算出
-      val minNextMillis = alarms.filter(_.enabled)
+      val minNextMillis = alarms.filter(_.enabled.is)
 				  .map(Alarms.calculateNextMillis(_))
 				  .reduceLeft(math.min(_,_))
       Alarms.enableAlert(this,minNextMillis)
@@ -84,11 +86,12 @@ class AlarmService extends Service with LocationListener{
   }
 
   private def checkAlert(location:Location){
-    for(alarm <- Alarms.getAllAlarm(getContentResolver)
+    val alarmTable = new AlarmTable(this)
+    for(alarm <- alarmTable.findAll
 			.filter(_.isActiveAt(System.currentTimeMillis))){
       val result = Array[Float](1)
       Location.distanceBetween(location.getLatitude, location.getLongitude,
-			       alarm.latitude, alarm.longitude, result)
+			       alarm.latitude.is, alarm.longitude.is, result)
       Log.i(TAG,"Distance:" + result(0))
 
       if(result(0) < 1500){ // TODO
@@ -103,8 +106,10 @@ class AlarmService extends Service with LocationListener{
   }
     
   private def disabledAlarm(alarm:Alarm) {
-    if(alarm.enabled)
-      Alarms.updateAlarm(this, alarm, Alarms.calculateNextMillis(alarm))
+    if(alarm.enabled.is){
+      val alarmTable = new AlarmTable(this)
+      alarmTable.update(alarm.enabled(false))
+    }
   }
 
   override def onLocationChanged(location:Location){

@@ -73,9 +73,9 @@ class SetAlarm extends PreferenceActivity with ActivityResultTrait{
 
   def setLocationPref(alarm:Alarm):Unit =
     setLocationPref(
-      latitude = alarm.latitude,
-      longitude = alarm.longitude,
-      address = alarm.address)
+      latitude = alarm.latitude.is,
+      longitude = alarm.longitude.is,
+      address = alarm.address.is)
 
   def setLocationPref(address:String, latitude:Double, longitude:Double){
     mLatitude = latitude
