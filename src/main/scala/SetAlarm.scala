@@ -120,6 +120,28 @@ class SetAlarm extends PreferenceActivity with ActivityResultTrait{
       }
     })
 
+    AlarmTable.findAll(AlarmTable._id === id).headOption match{
+      case Some(alarm) =>
+	setLocationPref(alarm)
+      
+	mLabel withActions(
+	  _ setText alarm.label,
+	  _ setSummary alarm.label)
+
+	mStartHour = alarm.ttl.shour
+	mStartMinute = alarm.ttl.sminute
+
+	mStartTime setSummary format("%d:%02d", mStartHour, mStartMinute)
+	mMinList setValue alarm.ttl.min.toString
+	mMinList setSummary alarm.ttl.min.toString
+
+	mInitialized = alarm.initialized
+      case _ => 
+	Log.e(TAG, "Failed to get Alarm id:" + id.toString)
+	finish
+    }
+
+/*	
     Alarms.getAlarm(getContentResolver, id) match {
       case Some(alarm) => 
 	setLocationPref(alarm)
@@ -140,7 +162,7 @@ class SetAlarm extends PreferenceActivity with ActivityResultTrait{
 	Log.e(TAG, "Failed to get Alarm id:" + id.toString)
 	finish
     }
-
+*/
     // PreferenceのLocationをクリックした時にMapを起動
     mLocation.setOnPreferenceClickListener(
       new OnPreferenceClickListener(){
