@@ -1,7 +1,7 @@
 
 package org.papamitra.locationalarm
 
-import android.app.Application
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 
@@ -50,9 +50,9 @@ class Alarm extends Mapper[Alarm] {
 
 }
 
-class AlarmTable(ctx:{def getApplication():Application}) extends Alarm with MetaMapper[Alarm] with SingleTableDBHelper[Alarm] {
+class AlarmTable(context:Context) extends Alarm with MetaMapper[Alarm] with SingleTableDBHelper[Alarm] {
   def dbTableName = "alarms"
-  def dbContext = ctx.getApplication
+  def dbContext = context
   val dbFileName = "alarms.db"
   val dbVersion = 5
 
