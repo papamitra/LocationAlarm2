@@ -68,6 +68,11 @@ class LocationAlarms extends Activity with TypedActivity{
     updateLayout
   }
 
+  override def onResume() {
+    super.onResume()
+    updateLayout
+  }
+
   override def onConfigurationChanged(newConfig:Configuration) {
     super.onConfigurationChanged(newConfig)
     updateLayout()
