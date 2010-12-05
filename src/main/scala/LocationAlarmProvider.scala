@@ -1,12 +1,8 @@
 
 package org.papamitra.locationalarm
 
-import android.content.{ ContentProvider, ContentUris, ContentValues, Context, UriMatcher }
-import android.database.{ Cursor, SQLException }
-import android.database.sqlite.{ SQLiteDatabase, SQLiteOpenHelper, SQLiteQueryBuilder }
-import android.net.Uri
-import android.text.TextUtils
-
+import android.app.Application
+import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 
 import org.papamitra.android.dbhelper._
@@ -54,9 +50,9 @@ class Alarm extends Mapper[Alarm] {
 
 }
 
-class AlarmTable(context:Context) extends Alarm with MetaMapper[Alarm] with SingleTableDBHelper[Alarm] {
+class AlarmTable(ctx:{def getApplication():Application}) extends Alarm with MetaMapper[Alarm] with SingleTableDBHelper[Alarm] {
   def dbTableName = "alarms"
-  def dbContext = context
+  def dbContext = ctx.getApplication
   val dbFileName = "alarms.db"
   val dbVersion = 5
 
