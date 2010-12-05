@@ -38,7 +38,6 @@
   </intent-filter>
 </service>
 
-<provider android:name="LocationAlarmProvider" android:authorities="org.papamitra.locationalarm"></provider>
 <activity android:name="AlarmAlert"
 	  android:label="@string/alarm_alert"
 	  android:theme="@style/alarm_alert"

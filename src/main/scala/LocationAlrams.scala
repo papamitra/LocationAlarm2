@@ -22,6 +22,8 @@ class LocationAlarms extends Activity with TypedActivity{
   import org.scalaandroid.AndroidHelper._
   import TypedResource._
 
+  lazy val alarmTable = new AlarmTable(this)
+
   private class AlarmAdapter(val context:Context, val cursor:Cursor) extends CursorAdapter(context, cursor){
     override def newView(context:Context, cursor:Cursor, parent:ViewGroup ):View = {
       val inflater = LayoutInflater.from(context)
@@ -31,15 +33,17 @@ class LocationAlarms extends Activity with TypedActivity{
     }
 
     override def bindView(view:View, context:Context, cursor:Cursor){
-      val alarm = new Alarm(cursor)
+      val alarm = alarmTable.cursorToMapper(cursor)
       view.findView(TR.list_enabled) match {
 	case null =>
 	case cb =>
-	  cb.setChecked(alarm.enabled)
+	  cb.setChecked(alarm.enabled.is)
 	  cb.setOnClickListener(new OnClickListener(){
 	    override def onClick(v:View){
-	      Alarms.enabledAlarm(LocationAlarms.this, alarm.id,
-				  v.asInstanceOf[CheckBox].isChecked)
+//	      Alarms.enabledAlarm(LocationAlarms.this, alarm.id,
+//				  v.asInstanceOf[CheckBox].isChecked)
+	      alarm.enabled(v.asInstanceOf[CheckBox].isChecked)
+	      alarmTable.update(alarm)
 	      startService(new Intent(LocationAlarms.this, classOf[AlarmService]))
 	    }
 	  })
@@ -48,13 +52,13 @@ class LocationAlarms extends Activity with TypedActivity{
       view.findView(TR.list_address) match{
 	  case null =>
 	  case tv => 
-	    tv.setText( if(null!=alarm.address) alarm.address else "")
+	    tv.setText( alarm.address.is)
       }
 
       view.findView(TR.list_label) match{
 	case null =>
 	case tv =>
-	  tv.setText( if(null!=alarm.label) alarm.label else "")
+	  tv.setText( alarm.label.is)
       }
     }
   }
@@ -74,7 +78,7 @@ class LocationAlarms extends Activity with TypedActivity{
     setContentView(R.layout.main)
 
     var listview = findView(TR.list)
-    listview.setAdapter(new AlarmAdapter(this, Alarms.getAlarmsCursor(getContentResolver)))
+    listview.setAdapter(new AlarmAdapter(this, alarmTable.findAllCursor()))
     listview.setEmptyView(findView(TR.empty))
 
     listview.setOnItemClickListener(

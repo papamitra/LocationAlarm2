@@ -24,73 +24,6 @@ object Alarms{
 
   val ALARM_KILLED = "alarm_killed"
 
-/*
-  def updateAlarm(context:Context, alarm:Alarm, nextMillis:Long=0) =
-    setAlarm(context,
-	     id = alarm._id.is,
-	     enabled = alarm.enabled.is,
-	     label = alarm.label.is,
-	     address = alarm.address.is,
-	     latitude = alarm.latitude.is,
-	     longitude = alarm.longitude.is,
-	     ttl=alarm.ttl.is,
-	     nextmillis=nextMillis)
-
-  def setAlarm(context:Context, id:Int, enabled:Boolean, label:String, address:String,
-	       latitude:Double, longitude:Double,
-	       ttl:TTL, nextmillis:Long=0){
-    
-    val values = new ContentValues(10) withActions(
-      _ put(Alarm.Columns.LABEL, label),
-      _ put(Alarm.Columns.ADDRESS, address),
-      _ put(Alarm.Columns.ENABLED, enabled),
-      _ put(Alarm.Columns.LONGITUDE, longitude),
-      _ put(Alarm.Columns.LATITUDE, latitude),
-      _ put(Alarm.Columns.INITIALIZED, false),
-      _ put(Alarm.Columns.SHOUR, ttl.shour.asInstanceOf[java.lang.Integer]),
-      _ put(Alarm.Columns.SMINUTE, ttl.sminute.asInstanceOf[java.lang.Integer]),
-      _ put(Alarm.Columns.MIN, ttl.min.asInstanceOf[java.lang.Integer]),
-      _ put(Alarm.Columns.NEXTMILLIS, nextmillis.asInstanceOf[java.lang.Long]))
-
-    context.getContentResolver.update(ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, id),
-				      values, null, null)
-
-  }
-*/
-
-/*
-  def enabledAlarm(context:Context, id:Int, enabled:Boolean):Unit =
-    getAlarm(context.getContentResolver, id) match {
-      case Some(alarm) => enabledAlarm(context, alarm, enabled)
-      case _ =>
-	Log.w(TAG,"Faild to get Alarm")
-    }
-
-  def enabledAlarm(context:Context, alarm:Alarm, enabled:Boolean):Unit =
-    setAlarm(context, alarm.id, enabled, alarm.label, alarm.address,
-	     alarm.latitude, alarm.longitude,
-	     alarm.ttl, 0)
-*/
-/*
-  def getAlarm(resolver:ContentResolver, id:Int):Option[Alarm] = 
-    using(resolver.query(
-      ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, id),
-      Alarm.Columns.ALARM_QUERY_COLUMNS,
-      null, null, null)) { c => c match {
-      case null => None
-      case c if c.moveToFirst => Some(new Alarm(c))
-      case _ => None
-    }}
-*/
-//  def getAlarmsCursor(resolver:ContentResolver) = 
-//    resolver.query(
-//		Alarm.Columns.CONTENT_URI,
-//		Alarm.Columns.ALARM_QUERY_COLUMNS,
-//		null, null, null)
-
-//  def getAllAlarm(resolver:ContentResolver) = 
-//    using(getAlarmsCursor(resolver)){ c=> c.map(new Alarm(_)).toArray}
-
   def calculateNextMillis(alarm:Alarm):Long = calculateAlarm(alarm.ttl.shour, alarm.ttl.sminute).getTimeInMillis
 
   def calculateAlarm(hour:Int, minute:Int):Calendar = {
@@ -118,7 +51,6 @@ object Alarms{
       _ set(Calendar.MINUTE, minute),
       _ set(Calendar.SECOND, 0),
       _ set(Calendar.MILLISECOND, 0))
-
 
   def enableAlert(context:Context, atTimeInMillis:Long){
     Log.i(TAG, "set alert:" + formatDate(Calendar.getInstance.withAction(_ setTimeInMillis(atTimeInMillis))))
